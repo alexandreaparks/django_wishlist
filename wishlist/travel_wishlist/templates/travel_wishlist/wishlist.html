@@ -1,0 +1,29 @@
+<h2>Travel Wishlist</h2>
+
+<form method="post" action="{% url 'place_list' %}">
+    {% csrf_token %}
+    {{ new_place_form }}
+    <button type="submit">Add</button>
+</form>
+
+
+{% for place in places %}  <!--template tag - loops over list of unvisited Place objects-->
+
+<div>
+
+    {{ place.name }}
+
+    <form method="POST" action="{%  url 'place_was_visited' place.pk %}">
+        {% csrf_token %}
+        <button>Visited!</button>
+    </form>
+
+</div>
+
+{% empty %}  <!--if places is an empty list, display the following paragraph-->
+
+<p>You have no places in your wishlist.</p>
+
+{% endfor %}
+
+<a href="{% url 'places_visited' %}">Places you've visited</a>  <!--link to visited page-->

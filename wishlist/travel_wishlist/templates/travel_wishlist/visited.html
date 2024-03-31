@@ -1,0 +1,20 @@
+<h2>Places you have visited</h2>
+
+
+{% if visited %}  <!--if visited is not empty, show list-->
+
+<ul>
+
+    {% for place in visited %}  <!--template tag - loops over list of visited Place objects-->
+        <li>{{ place.name }}</li>
+    {% endfor %}
+
+</ul>
+
+{% else %}  <!--if visited is empty, show following paragraph-->
+
+<p>You have not visited any places yet</p>
+
+{% endif %}
+
+<a href="{% url 'place_list' %}">Your wishlist</a>  <!--link to wishlist page-->
