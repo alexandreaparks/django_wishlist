@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Travel Wishlist</title>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sakura.css/css/sakura.css" type="text/css">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+
+    </head>
+
+    <body>
+
+            <h1>Travel Wishlist</h1>
+
+                {% block content %}
+                {% endblock %}
+
+            <div>
+                <p>A travel wishlist site built with Django</p>
+
+                <a class="nav-link" href="{% url 'place_list' %}">Your wishlist</a>  <!--link to wishlist page-->
+                <a class="nav-link" href="{% url 'places_visited' %}">Places you've visited</a>  <!--link to visited page-->
+            </div>
+
+    </body>
+
+</html>
