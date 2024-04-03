@@ -13,6 +13,14 @@ urlpatterns = [
     # view knows which place was visited
     path('place/<int:place_pk>/was_visited/', views.place_was_visited, name='place_was_visited'),
 
+    # path for a page about a single Place - uses primary key of place object so that place_details knows
+    # which place to display
+    path('place/<int:place_pk>', views.place_details, name='place_details'),
+
+    # path for deleting a place - uses primary key in path so the delete_place function knows
+    # which place to delete
+    path('place/<int:place_pk>/delete', views.delete_place, name='delete_place'),
+
     # path for about page - requests are handled by about function in views module
     path('about', views.about, name='about')
 ]

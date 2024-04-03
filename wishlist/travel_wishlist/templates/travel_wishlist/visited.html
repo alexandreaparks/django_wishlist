@@ -9,7 +9,11 @@
 <ul>
 
     {% for place in visited %}  <!--template tag - loops over list of visited Place objects-->
-        <li>{{ place.name }}</li>
+        <li>
+            <a href="{% url 'place_details' place.pk %}">
+                {{ place.name }}
+            </a>
+        </li>
     {% endfor %}
 
 </ul>
