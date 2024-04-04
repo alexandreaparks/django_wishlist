@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Place
-from .forms import NewPlaceForm
+from .forms import NewPlaceForm, TripReviewForm
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.http import HttpResponseForbidden
 
 
@@ -63,8 +64,33 @@ def place_was_visited(request, place_pk):  # django extracts number from path to
 @login_required
 def place_details(request, place_pk):
     place = get_object_or_404(Place, pk=place_pk)  # try to get object or return 404 error response
-    # combine html and data about single place to build page
-    return render(request, 'travel_wishlist/place_detail.html', {'place': place})
+
+    # is logged-in user the owner of the place?
+    if place.user != request.user:
+        return HttpResponseForbidden()
+
+    # GET request (show data and form), or POST request (update Place object)?
+
+
+    if request.method == 'POST':  # if POST, validate form and update Place object
+        form = TripReviewForm(request.POST, request.FILES, instance=place)  # make form with data sent with request
+        if form.is_valid():  # django validates using DB constraints
+            form.save()  # save to DB
+            messages.info(request, 'Trip information updated!')
+        else:
+            messages.error(request, form.errors)
+
+        return redirect('place_details', place_pk=place_pk)  # reload place details for this place
+
+    else:  # if GET, show Place info and form
+        # if place is visited, show form - no form if place is not visited
+        if place.visited:
+            review_form = TripReviewForm(instance=place)
+            # combine html and data about single place to build page
+            return render(request, 'travel_wishlist/place_detail.html', {'place': place,
+                                                                         'review_form': review_form})
+        else:  # don't include form
+            return render(request, 'travel_wishlist/place_detail.html', {'place': place})
 
 
 @login_required
